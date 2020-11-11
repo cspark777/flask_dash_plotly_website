@@ -97,7 +97,7 @@ def get_main_table():
 
         myresult = get_data_from_db(select_sql)
 
-        table_str = json.dumps(myresult)
+        #table_str = json.dumps(myresult)
         #log_message("data/table.txt", table_str)
 
         table = pd.DataFrame(myresult)  
