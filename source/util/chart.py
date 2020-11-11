@@ -11,6 +11,11 @@ from flask_mail import Message, Mail
 import json
 import settings
 from source import mail, static_path
+import base64
+
+def get_base64_encoded_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode('utf-8')
 
 def log_message(log_file, message):    
     hs = open(log_file,"a", encoding="utf8")
@@ -185,6 +190,8 @@ def send_email(email_addr):
 
     table_url = settings.BASE_URL + "/wallet_status/maintable"
 
+    image_path = static_path + "images/chart/"
+
     table_content = ""
     chart_content = ""
     table = get_main_table().values
@@ -211,8 +218,10 @@ def send_email(email_addr):
         
         chart_url = settings.BASE_URL + "/wallet_status/?bot_id=" + str(bot_id)
         chart_image_url = settings.BASE_URL + "/images/chart/{}.jpeg".format(bot_id)
+        chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
+        chart_img_base64 = get_base64_encoded_image(chart_image_path)
 
-        chart_div = '<div class="chart"><a href="' + chart_url + '"><img src="' + chart_image_url + '" width="450" height="300" style="display: block;" ></a></div>'
+        chart_div = '<div class="chart"><a href="' + chart_url + '"><img src=data:image/jpeg;base64,' + chart_img_base64 + '" width="450" height="300" style="display: block;" ></a></div>'
         chart_content = chart_content + chart_div
 
     template_content = template_content.replace("{{table_url}}", table_url)
