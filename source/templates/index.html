@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block div %}
+<section class="section-space secion-article">
+    <div class="container h-100">
+        <div class="row">
+            <div class="col-lg-5 center p-50 background-white b-r-6">                
+                <form method="GET" action="/wallet_status/">
+                    <div class="form-group">
+                        <label class="sr-only">Enter Bot ID</label>
+                        <input type="text" name="bot_id" class="form-control" placeholder="Enter Bot ID">
+                    </div>
+                    <div class="text-left form-group">
+                        <button type="submit" class="btn">Chart</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

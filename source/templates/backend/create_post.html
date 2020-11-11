@@ -1,0 +1,47 @@
+{% extends "backend/base.html" %}
+
+{% block div %}
+<!-- Masthead -->
+<section class="section-content" id="welcome" class="p-b-0">
+    <div class="container h-100">
+        <div class="row">
+            <div class="content col-lg-12">
+                <h4>{{ page_name }} </h4>
+                <div class="breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/backend/dashboard">Backend</a></li>
+                            <li class="breadcrumb-item"><a href="/backend/posts">Posts</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ page_name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="line"></div>                
+            </div>
+        </div>
+        <div style="color:white;" class="container">
+            <form class="form-group" method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.title.label(class = "form-control-label") }}
+                    {{form.title(class = "form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.text.label(class = "form-control-label") }}
+                    {{form.text(class = "form-control form-control-lg", style='height: 200px; font-size:.9rem;') }}
+                </div>
+                <div class="form-group">
+                    {{ form.post_image.label(class = "form-control-label") }}
+                    {{form.post_image(class = "form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{form.submit(class = "btn btn-outline-info", style='') }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    {% endblock %}
+</section>

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block div %}
+<section class="section-content maintable-section" class="p-b-0">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-lg-6">
+                <h4>Bot table</h4>                
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="bot_table" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">No</th>
+                            <th rowspan="2">Bot ID</th>
+                            <th rowspan="2">strategy</th>
+                            <th rowspan="2">minutes</th>
+                            <th rowspan="2">bot_start_run</th>
+                            <th colspan="2">Wallet</th>
+                            <th colspan="2">Price</th>
+                            <th rowspan="2">time_run</th>
+                            <th rowspan="2">change_in_per</th>                            
+                        </tr>
+                        <tr>
+                            <th>last</th>
+                            <th>start</th>
+                            <th>end</th>
+                            <th>start</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for row in table %} 
+                        <tr>                       
+                            <td>{{ loop.index }}</td>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td>{{ row[5] }}</td>
+                            <td>{{ row[6] }}</td>
+                            <td>{{ row[7] }}</td>
+                            <td>{{ row[8] }}</td>
+                            <td>{{ row[9] }}</td>   
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

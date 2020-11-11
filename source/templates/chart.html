@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block div %}
+<section class="section-content">
+    <div class="container">
+        <div class="row">
+            <div class="content col-lg-12">                
+                <div class="breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chart</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="line"></div>                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- content -->
+            <input type="hidden" id="chart1_data" value="{{ chart_data }}">
+            <input type="hidden" id="chart1_title" value="{{ chart.title }}">
+
+            <div class="col-12 col-xl-12">
+                <div class="heading-text heading-section">
+                    <h4>{{ chart.title }}</h4>
+                </div>                
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <div class="chart-div mb-5">
+                    <canvas id="chart1"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <div class="chart-div mb-5">
+                    <canvas id="chart1_pie"></canvas>
+                </div>
+            </div>
+            
+            <div class="content col-lg-12">
+                <!-- Blog -->
+                <div id="blog" class="single-post">
+                    <!-- Post single item-->
+                    <div class="post-item">
+                        <div class="post-item-wrap">                            
+                            <div class="post-item-description">                                
+                                {{ chart.text }}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end: Post single item-->
+                </div>
+            </div>
+            <!-- end: content -->
+        </div>
+    </div>
+</section>
+<!-- end: Page Content -->
+{% endblock %}
