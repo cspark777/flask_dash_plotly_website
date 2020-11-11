@@ -35,8 +35,8 @@ app.config['MAIL_SERVER']=settings.MAIL_SERVER
 app.config['MAIL_PORT'] = settings.MAIL_PORT
 app.config['MAIL_USERNAME'] = settings.MAIL_USERNAME
 app.config['MAIL_PASSWORD'] = settings.MAIL_PASSWORD
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USE_TLS'] = settings.MAIL_USE_TLS
+app.config['MAIL_USE_SSL'] = settings.MAIL_USE_SSL
 
 ##################
 
