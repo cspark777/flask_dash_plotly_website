@@ -65,7 +65,7 @@ def get_data_from_db(sql):
     myresult = mycursor.fetchall()
     mycursor.close()
     mydb.close()
-
+    print("---")
     return myresult
 
 def get_strategy(bot_id):
@@ -92,17 +92,21 @@ def get_data(strategy):
     return strategies
 
 def get_main_table():   
+    '''
     if settings.USE_DATABASE: 
         select_sql = "SELECT bot_id , strategy ,minutes , DATE_FORMAT(bot_start_run, '%Y-%m-%d %h:%i:%s') AS bot_start_run , wallet_last , wallet_start , price_end ,price_start, DATEDIFF(NOW() , bot_start_run ) AS time_run , wallet_last/wallet_start AS change_in_per FROM ruuning_wallets_vm ORDER BY wallet_last DESC"
 
         myresult = get_data_from_db(select_sql)
+
+        print(len(myresult))
 
         #table_str = json.dumps(myresult)
         #log_message("data/table.txt", table_str)
 
         table = pd.DataFrame(myresult)  
     else:
-        table = get_main_table1()
+        '''
+    table = get_main_table1()
     return table.values
 
 
@@ -118,6 +122,8 @@ def get_graph(bot_id):
     data = get_data(bot_id)
     strategy = get_strategy(bot_id)
     print("get_graph, bot_id={}, data length={}".format(bot_id, len(data)))
+    if len(data) == 0:
+        return False
 
     data['predict_p6'] = data['predict_price'].shift(360)
     data['wallet'] = data['cash'] + data['amount'] * data['current_price']
@@ -166,6 +172,8 @@ def get_all_bot():
 def get_image_chart(bot_id):
     path = static_path + "images/chart/{}.jpeg".format(bot_id)
     figure = get_graph(bot_id)
+    if figure is False:
+        return
     pio.write_image(figure, path)
 
 
