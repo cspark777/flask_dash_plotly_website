@@ -7,8 +7,6 @@ os.environ["OAUTHLIB_RELAX_TOKEN_SCOPE"] = '1'
 
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 import settings
