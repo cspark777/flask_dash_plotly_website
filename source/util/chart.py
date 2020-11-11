@@ -98,7 +98,7 @@ def get_data(strategy):
 
 def get_main_table():   
     
-    if settings.USE_DATABASE == False: 
+    if settings.USE_DATABASE == True: 
         select_sql = "SELECT bot_id , strategy ,minutes , DATE_FORMAT(bot_start_run, '%Y-%m-%d %h:%i:%s') AS bot_start_run , wallet_last , wallet_start , price_end ,price_start, DATEDIFF(NOW() , bot_start_run ) AS time_run , wallet_last/wallet_start AS change_in_per FROM ruuning_wallets_vm ORDER BY wallet_last DESC"
 
         myresult = get_data_from_db(select_sql)
@@ -220,14 +220,13 @@ def send_email(email_addr):
         chart_image_url = settings.BASE_URL + "/images/chart/{}.jpeg".format(bot_id)
         chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
         chart_img_base64 = get_base64_encoded_image(chart_image_path)
-
-        chart_div = '<div class="chart"><a href="' + chart_url + '"><img src=data:image/jpeg;base64,' + chart_img_base64 + '" width="450" height="300" style="display: block;" ></a></div>'
+        
+        chart_div = '<div class="chart"><a href="' + chart_url + '"><img src="data:image/jpeg;base64,' + chart_img_base64 + '" width="450" height="300" style="display: block;" ></a></div>'
         chart_content = chart_content + chart_div
 
     template_content = template_content.replace("{{table_url}}", table_url)
     template_content = template_content.replace("{{table_content}}", table_content)
     template_content = template_content.replace("{{chart_content}}", chart_content)
-
 
     msg = Message('Hello', sender = settings.MAIL_SENDER, recipients = [email_addr])
     msg.html = template_content
