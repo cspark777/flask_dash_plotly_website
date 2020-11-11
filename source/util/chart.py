@@ -92,7 +92,7 @@ def get_data(strategy):
     return strategies
 
 def get_main_table():   
-    '''
+    
     if settings.USE_DATABASE: 
         select_sql = "SELECT bot_id , strategy ,minutes , DATE_FORMAT(bot_start_run, '%Y-%m-%d %h:%i:%s') AS bot_start_run , wallet_last , wallet_start , price_end ,price_start, DATEDIFF(NOW() , bot_start_run ) AS time_run , wallet_last/wallet_start AS change_in_per FROM ruuning_wallets_vm ORDER BY wallet_last DESC"
 
@@ -105,9 +105,9 @@ def get_main_table():
 
         table = pd.DataFrame(myresult)  
     else:
-        '''
-    table = get_main_table1()
-    return table.values
+        
+        table = get_main_table1()
+    return table
 
 
 
@@ -167,6 +167,8 @@ def get_graph(bot_id):
 
 def get_all_bot():
     table = get_main_table()
+    print("--------------")
+    print(table[0])
     return table[0]
 
 def get_image_chart(bot_id):
@@ -185,7 +187,7 @@ def send_email(email_addr):
 
     table_content = ""
     chart_content = ""
-    table = get_main_table()
+    table = get_main_table().values
 
     index = 0
     for row in table:

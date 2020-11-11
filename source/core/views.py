@@ -18,6 +18,6 @@ def index():
 
 @core.route('/wallet_status/maintable', methods=['GET'])
 def maintable():
-    table = get_main_table()    
+    table = get_main_table().values    
     return render_template('maintable.html', table=table)
 
