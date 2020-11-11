@@ -12,8 +12,6 @@ import json
 import settings
 from source import mail, static_path
 
-_USE_DATABASE = False
-
 def log_message(log_file, message):    
     hs = open(log_file,"a", encoding="utf8")
     hs.write(message + "\n")
@@ -71,7 +69,7 @@ def get_data_from_db(sql):
     return myresult
 
 def get_strategy(bot_id):
-    if _USE_DATABASE:
+    if settings.USE_DATABASE:
         select_sql = "select strategy,minutes from bot_strategy where bot_id = " + str(bot_id)
         myresult = get_data_from_db(select_sql)
         strategies = pd.DataFrame(myresult)
@@ -81,7 +79,7 @@ def get_strategy(bot_id):
     return strategies
 
 def get_data(strategy):
-    if _USE_DATABASE:
+    if settings.USE_DATABASE:
         select_sql = "select * from action_log where bot_id = " + str(strategy)     
         myresult = get_data_from_db(select_sql)
 
@@ -94,7 +92,7 @@ def get_data(strategy):
     return strategies
 
 def get_main_table():   
-    if _USE_DATABASE: 
+    if settings.USE_DATABASE: 
         select_sql = "SELECT bot_id , strategy ,minutes , DATE_FORMAT(bot_start_run, '%Y-%m-%d %h:%i:%s') AS bot_start_run , wallet_last , wallet_start , price_end ,price_start, DATEDIFF(NOW() , bot_start_run ) AS time_run , wallet_last/wallet_start AS change_in_per FROM ruuning_wallets_vm ORDER BY wallet_last DESC"
 
         myresult = get_data_from_db(select_sql)

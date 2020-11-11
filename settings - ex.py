@@ -11,3 +11,5 @@ MAIL_PASSWORD = 'password'
 MAIL_SENDER = 'email@gmail.com'
 
 BASE_URL = 'http://127.0.0.1:8080'
+
+USE_DATABASE = True
