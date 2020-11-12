@@ -124,7 +124,7 @@ def get_data(strategy):
 
 def get_main_table():   
     
-    if settings.USE_DATABASE == False: 
+    if settings.USE_DATABASE == True: 
         select_sql = "SELECT bot_id , strategy ,minutes , DATE_FORMAT(bot_start_run, '%Y-%m-%d %h:%i:%s') AS bot_start_run , wallet_last , wallet_start , price_end ,price_start, DATEDIFF(NOW() , bot_start_run ) AS time_run , wallet_last/wallet_start AS change_in_per FROM ruuning_wallets_vm ORDER BY wallet_last DESC"
 
         myresult = get_data_from_db(select_sql)
