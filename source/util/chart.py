@@ -13,6 +13,14 @@ import settings
 from source import mail, static_path
 import base64
 
+import email, smtplib, ssl
+
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+
 def get_base64_encoded_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode('utf-8')
@@ -217,18 +225,65 @@ def send_email(email_addr):
         bot_id = row[0]
         
         chart_url = settings.BASE_URL + "/wallet_status/?bot_id=" + str(bot_id)
-        chart_image_url = settings.BASE_URL + "/images/chart/{}.jpeg".format(bot_id)
-        chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
-        chart_img_base64 = get_base64_encoded_image(chart_image_path)
+        #chart_image_url = settings.BASE_URL + "/images/chart/{}.jpeg".format(bot_id)
+        #chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
+        #chart_img_base64 = get_base64_encoded_image(chart_image_path)
         
-        chart_div = '<div class="chart"><a href="' + chart_url + '"><img src="data:image/jpeg;base64,' + chart_img_base64 + '" width="450" height="300" style="display: block;" ></a></div>'
+        chart_div = '<div class="chart"><a href="' + chart_url + '"><img src="cid:' + str(bot_id) + '" width="450" height="300" style="display: block;" ></a></div>'
         chart_content = chart_content + chart_div
 
     template_content = template_content.replace("{{table_url}}", table_url)
     template_content = template_content.replace("{{table_content}}", table_content)
     template_content = template_content.replace("{{chart_content}}", chart_content)
 
+
+
+    '''
     msg = Message('Hello', sender = settings.MAIL_SENDER, recipients = [email_addr])
     msg.html = template_content
     mail.send(msg)
+
+    '''
+
+    smtp_server = settings.MAIL_SERVER
+    port = settings.MAIL_PORT  # For starttls
+    sender_email = settings.MAIL_SENDER
+    password = settings.MAIL_PASSWORD
+
+    # Create a secure SSL context
+    context = ssl.create_default_context()
+
+    # Try to log in to server and send email
+    try:
+        server = smtplib.SMTP(smtp_server,port)
+        server.ehlo() # Can be omitted
+        server.starttls(context=context) # Secure the connection
+        server.ehlo() # Can be omitted
+        server.login(sender_email, password)
+        # TODO: Send email here
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "test"
+        message["From"] = sender_email
+        message["To"] = email_addr
+
+        part = MIMEText(template_content, "html")
+        message.attach(part)
+
+        for row in table:
+            bot_id = row[0]
+            chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
+            with open(chart_image_path, 'rb') as f:
+                msg_image = MIMEImage(f.read())
+                msg_image.add_header('Content-ID', '<{0}>'.format(bot_id))
+                message.attach(msg_image)
+
+        server.sendmail(
+            sender_email, email_addr, message.as_string()
+        )
+
+    except Exception as e:
+        # Print any error messages to stdout
+        print(e)
+    finally:
+        server.quit() 
     return "ok"
