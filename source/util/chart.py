@@ -20,6 +20,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+from pathlib import Path
 
 def get_base64_encoded_image(image_path):
     with open(image_path, "rb") as img_file:
@@ -272,6 +273,10 @@ def send_email(email_addr):
         for row in table:
             bot_id = row[0]
             chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
+            my_file = Path(chart_image_path)
+            if not my_file.is_file():
+                get_image_chart(bot_id)
+
             with open(chart_image_path, 'rb') as f:
                 msg_image = MIMEImage(f.read())
                 msg_image.add_header('Content-ID', '<{0}>'.format(bot_id))
