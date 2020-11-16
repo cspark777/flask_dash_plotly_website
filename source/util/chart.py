@@ -136,16 +136,19 @@ def get_graph(bot_id):
     data = get_data(bot_id)
     strategy = get_strategy(bot_id)
     print("get_graph, bot_id={}, data length={}".format(bot_id, len(data)))
+    
     if len(data) == 0:
         return False
-
-    data['predict_p6'] = data['predict_price'].shift(360)
-    data['wallet'] = data['cash'] + data['amount'] * data['current_price']
-    data['datetime'] = pd.to_datetime(data['rest_prediction_time'],unit='s')
-    data = data.set_index('datetime')
-    data['buy'] = data['current_price'].loc[data['action_1'] == 1] 
-    data['sell'] = data['current_price'].loc[data['action_1'] == 3] 
-    data = data.sort_values(by = 'rest_prediction_time')
+        
+    else:
+    
+        data['predict_p6'] = data['predict_price'].shift(360)
+        data['wallet'] = data['cash'] + data['amount'] * data['current_price']
+        data['datetime'] = pd.to_datetime(data['rest_prediction_time'],unit='s')
+        data = data.set_index('datetime')
+        data['buy'] = data['current_price'].loc[data['action_1'] == 1] 
+        data['sell'] = data['current_price'].loc[data['action_1'] == 3] 
+        data = data.sort_values(by = 'rest_prediction_time')
 
     trace1 = []    
     df_sub = data
@@ -177,6 +180,7 @@ def get_graph(bot_id):
             height=1200
         ),
     }    
+
     return figure
 
 def get_all_bot():
@@ -185,13 +189,13 @@ def get_all_bot():
     print(table[0])
     return table[0]
 
-def get_image_chart(bot_id):
+def get_image_chart(bot_id):    
     path = static_path + "images/chart/{}.jpeg".format(bot_id)
     figure = get_graph(bot_id)
     if figure is False:
-        return
+        return False
     pio.write_image(figure, path)
-
+    return True
 
 def send_email(email_addr):
     template_path = static_path + "email_template/maintable.html"
@@ -275,7 +279,9 @@ def send_email(email_addr):
             chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
             my_file = Path(chart_image_path)
             if not my_file.is_file():
-                get_image_chart(bot_id)
+                res = get_image_chart(bot_id)
+                if not res:
+                    chart_image_path = static_path + "/images/chart/none.jpeg"
 
             with open(chart_image_path, 'rb') as f:
                 msg_image = MIMEImage(f.read())

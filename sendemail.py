@@ -291,10 +291,11 @@ def send_email(email_addr):
         for row in table:
             bot_id = row[0]
             chart_image_path = static_path + "/images/chart/{}.jpeg".format(bot_id)
-
             my_file = Path(chart_image_path)
             if not my_file.is_file():
-                get_image_chart(bot_id)
+                res = get_image_chart(bot_id)
+                if not res:
+                    chart_image_path = static_path + "/images/chart/none.jpeg"
 
             with open(chart_image_path, 'rb') as f:
                 msg_image = MIMEImage(f.read())
