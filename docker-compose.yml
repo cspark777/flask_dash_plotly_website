@@ -3,9 +3,9 @@ version: "3"
 services:
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python app.py runserver 0.0.0.0:8080
     volumes:
       - .:/flask_dash_plotly_website
     ports:
-      - "8000:8000"
+      - "8080:8080"
     
